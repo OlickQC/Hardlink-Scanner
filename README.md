@@ -1,4 +1,4 @@
-# Hardlink-checker | Hardlink TV Shows Scanner
+# Hardlink TV Shows Scanner
 
 A Python utility to scan a TV media library and generate a report of video files that are **not hardlinked**, grouped by TV show.
 
