@@ -1,0 +1,10 @@
+{
+  "root_dir": "/mnt/user/data/media/tv",
+  "exclusion_file": "exclusion.txt",
+  "video_extensions": [
+    ".mkv",
+    ".mp4"
+  ],
+  "reports_dir": "/reports",
+  "verbose": true
+}
