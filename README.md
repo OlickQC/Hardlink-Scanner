@@ -1,7 +1,7 @@
 ## Table of Contents
 
 - English
-  - [Hardlink TV Shows Scanner (English)] (#hardlink-tv-shows-scanner-english)
+  - [Hardlink TV Shows Scanner (English)](#hardlink-tv-shows-scanner-english)
   - [Why This Matters](#why-this-matters)
   - [What is a Hardlink?](#what-is-a-hardlink)
   - [Quick Start](#quick-start)
@@ -11,7 +11,7 @@
   - [Cleanup (Sonarr/Radarr)](#cleanup-sonarrradarr)
 
 - Français
-  - [Hardlink TV Shows Scanner (Français)] (#hardlink-tv-shows-scanner-english)
+  - [Hardlink TV Shows Scanner (Français)](#hardlink-tv-shows-scanner-english)
   - [Pourquoi c'est important](#pourquoi-cest-important)
   - [Qu'est-ce qu'un Hardlink ?](#quest-ce-quun-hardlink-)
   - [Démarrage rapide](#démarrage-rapide)
