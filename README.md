@@ -1,7 +1,3 @@
-# Hardlink TV Shows Scanner (English)
-
-Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
-
 ## Table of Contents
 
 - English
@@ -21,6 +17,10 @@ Scans a TV media library and reports video files that are **not hardlinked**. De
   - [Liste d'exclusion](#liste-dexclusion)
   - [Résultats](#résultats)
   - [Nettoyage (Sonarr/Radarr)](#nettoyage-sonarrradarr)
+
+# Hardlink TV Shows Scanner (English)
+
+Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
 ## Why This Matters
 
