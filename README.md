@@ -1,163 +1,49 @@
 # Hardlink TV Shows Scanner
 
-A Python utility to scan a TV media library and generate a report of video files that are **not hardlinked**, grouped by TV show.
+Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers (Sonarr, torrent seeding, etc.).
 
-This tool is designed for Linux / Unraid / media-server environments where hardlinks are expected (Sonarr, torrent seeding setups, etc.).
+## Quick Start
 
----
-
-## Why this exists
-
-In a proper media setup:
-- Torrented files are hardlinked into the library
-- One physical file can have multiple directory entries
-- Disk space is saved
-
-If a file has **no hardlinks**, it often means:
-- It was copied instead of hardlinked
-- It broke out of the seeding workflow
-- It is wasting disk space
-
-This script helps you **audit and detect those files**.
-
----
-
-## Features
-
-- Recursively scans a TV library
-- Detects non-hardlinked video files (`st_nlink == 1`)
-- Groups results by **TV show title**
-- Supports an exclusion list
-- Uses a JSON configuration file
-- Generates timestamped reports
-- Optional verbose mode
-- Read-only (never modifies files)
-
----
-
-## Project Structure
-
-```
-Hardlink-checker/
-├─ scan.py
-├─ README.md
-├─ config/
-│  ├─ config.json
-│  └─ exclusion.txt
-└─ reports/
-   └─ non_hardlinked_tv_episodes_YYYY-MM-DD_HH-MM.txt
-```
-
----
+1. Edit `config/config.json` - set your TV library path in `root_dir`
+2. Run: `python3 scan.py`
+3. Check results in `reports/non_hardlinked_tv_episodes_{timestamp}.txt`
 
 ## Configuration
 
-### `config/config.json`
-
+**config/config.json:**
 ```json
 {
   "root_dir": "/mnt/user/data/media/tv",
   "exclusion_file": "exclusion.txt",
-  "video_extensions": [
-    ".mkv",
-    ".mp4"
-  ],
-  "reports_dir": "/reports",
+  "video_extensions": [".mkv", ".mp4"],
+  "reports_dir": "reports",
   "verbose": true
 }
 ```
 
-### Configuration options
-
-| Key | Description |
-|---|---|
-| `root_dir` | Root directory of your TV library |
-| `exclusion_file` | Exclusion list filename (relative to `/config`) |
-| `video_extensions` | File extensions to scan |
-| `reports_dir` | Directory where reports are written |
-
----
+**Relocate config/reports folders** (optional):  
+Edit these variables at the top of `scan.py`:
+```python
+CONFIG_DIR_OVERRIDE = "/custom/path/to/config"
+REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
+```
 
 ## Exclusion List
 
-### `config/exclusion.txt`
-
-- One file path per line
-- Paths are **relative to `root_dir`**
-- Blank lines are ignored
-- Lines starting with `#` are comments
+Add files to ignore in `config/exclusion.txt` (one per line, relative to `root_dir`).  
+**Use the same path format as shown in the reports.**
 
 Example:
-
 ```
-# Ignore special training videos
-us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mp4
-us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E02.mp4
-```
-
----
-
-## How TV Shows Are Grouped
-
-The script assumes this directory structure:
-
-```
-category/Show Title/Season XX/episode.mkv
+# Ignore these specific episodes
+us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mkv
+us/Breaking Bad/Season 05/Breaking Bad - S05E14 - Ozymandias.mp4
 ```
 
----
+## Output
 
-## Report Output
+- **Report:** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
+- **Logs:** `reports/logs_{timestamp}.txt`
 
-Reports are written to the directory defined by `reports_dir`
-and include a timestamp in the filename.
+Both files include timestamps and scan statistics.
 
-Example filename:
-
-```
-non_hardlinked_tv_episodes_2025-12-24_06-29.txt
-```
-
----
-
-## Running the Script
-
-From the project directory:
-
-```
-python3 scan.py
-```
-
-The script will:
-1. Load configuration
-2. Load exclusions
-3. Scan the filesystem
-4. Generate a report
-
----
-
-## Verbose Mode
-
-Verbose mode prints detailed runtime information:
-- Paths being used
-- Number of files scanned
-- Number of excluded files
-- Number of non-hardlinked files
-- Final report location
-
----
-
-## Requirements
-
-- Python 3.8+
-- Linux filesystem supporting hardlinks (ext4, XFS, ZFS, btrfs)
-- Read access to media library
-- Write access to the reports directory
-
----
-
-## Safety
-
-- The script is **read-only**
-- It does not modify, delete, or relink files
-- It only reads filesystem metadata

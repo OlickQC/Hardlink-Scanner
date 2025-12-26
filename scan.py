@@ -10,11 +10,11 @@ import os
 from collections import defaultdict
 from datetime import datetime
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+
+# THOSE ARE MODIFIABLE. Quick user overrides. Leave as None to use defaults.
+CONFIG_DIR_OVERRIDE = None
+REPORTS_DIR_OVERRIDE = None
 
 # ---------------------------
 # Configuration
@@ -22,7 +22,18 @@ logging.basicConfig(
 
 # Base directory (script location)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CONFIG_DIR = os.path.join(BASE_DIR, "config")
+
+# Optional override for config directory via user setting or environment variable.
+config_dir_setting = CONFIG_DIR_OVERRIDE or os.environ.get("HARDLINK_SCANNER_CONFIG_DIR")
+
+if config_dir_setting:
+    resolved_config_dir = os.path.expanduser(config_dir_setting)
+    if not os.path.isabs(resolved_config_dir):
+        resolved_config_dir = os.path.join(BASE_DIR, resolved_config_dir)
+else:
+    resolved_config_dir = os.path.join(BASE_DIR, "config")
+
+CONFIG_DIR = os.path.normpath(resolved_config_dir)
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.json")
 
 # Load configuration from JSON file
@@ -35,13 +46,23 @@ with open(CONFIG_FILE, "r", encoding="utf-8") as f:
 # Configuration values
 VERBOSE = CONFIG.get("verbose", True)
 ROOT_DIR = CONFIG["root_dir"]
-EXCLUSION_FILE = os.path.join(CONFIG_DIR, CONFIG["exclusion_file"])
+EXCLUSION_FILE = os.path.join(
+    CONFIG_DIR,
+    CONFIG.get("exclusion_file", "exclusion.txt"),
+)
 VIDEO_EXTENSIONS = tuple(
     ext.lower() for ext in CONFIG["video_extensions"]
 )
-REPORTS_DIR = os.path.join(BASE_DIR, "reports")
+reports_dir_setting = REPORTS_DIR_OVERRIDE or CONFIG.get("reports_dir")
 
-# Create reports directory if it doesn't exist
+if reports_dir_setting:
+    resolved_reports_dir = os.path.expanduser(reports_dir_setting)
+    if not os.path.isabs(resolved_reports_dir):
+        resolved_reports_dir = os.path.join(BASE_DIR, resolved_reports_dir)
+else:
+    resolved_reports_dir = os.path.join(BASE_DIR, "reports")
+
+REPORTS_DIR = os.path.normpath(resolved_reports_dir)
 os.makedirs(REPORTS_DIR, exist_ok=True)
 
 # Generate timestamped report filename
@@ -50,6 +71,22 @@ REPORT_FILE = os.path.join(
     REPORTS_DIR,
     f"non_hardlinked_tv_episodes_{TIMESTAMP}.txt"
 )
+LOG_FILE = os.path.join(REPORTS_DIR, f"logs_{TIMESTAMP}.txt")
+
+
+def configure_logging(log_path):
+    """Configure logging to console and a log file."""
+    handlers = [
+        logging.StreamHandler(),
+        logging.FileHandler(log_path, encoding="utf-8"),
+    ]
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format=LOG_FORMAT,
+        handlers=handlers,
+        force=True,
+    )
 
 
 # ---------------------------
@@ -161,11 +198,15 @@ def main():
     """
     Main entry point of the script.
     """
+    configure_logging(LOG_FILE)
+
     logging.info("Script started")
+    logging.info("Config directory: %s", CONFIG_DIR)
     logging.info("Root media directory: %s", ROOT_DIR)
     logging.info("Exclusion file: %s", EXCLUSION_FILE)
     logging.info("Reports directory: %s", REPORTS_DIR)
     logging.info("Report file: %s", REPORT_FILE)
+    logging.info("Logs file: %s", LOG_FILE)
 
     # Load exclusion list
     exclusions = load_exclusions(EXCLUSION_FILE)
