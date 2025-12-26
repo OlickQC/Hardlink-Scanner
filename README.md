@@ -1,4 +1,8 @@
-## Table of Contents
+## Hardlink TV Shows Scanner
+[EN] Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
+[FR] Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
+
+## 📝 Table of Contents
 
 - English
   - [Hardlink TV Shows Scanner (English)](#hardlink-tv-shows-scanner-english)
@@ -20,11 +24,7 @@
   - [Résultats](#résultats)
   - [Nettoyage (Sonarr/Radarr)](#nettoyage-sonarrradarr)
 
-# Hardlink TV Shows Scanner (English)
-
-Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
-
-## Why This Matters
+## 💡 Why This Matters
 
 **Sonarr** and **Radarr** can create hardlinks to save disk space by making multiple directory entries pointing to the same physical file. However, hardlinks can break for various reasons:
 - Moving files between filesystems
@@ -37,13 +37,13 @@ When a hardlink breaks, the file is duplicated on disk, wasting valuable storage
 
 A hardlink is a direct reference to a file's data on disk. Instead of copying a file (which doubles the storage), a hardlink creates another name pointing to the **same physical data**. It's invisible to users but saves disk space. One file, multiple paths.
 
-## Quick Start
+## 🚀 Quick Start
 
 1. Edit `config/config.json` - set your TV library path in `root_dir`
 2. Run: `python3 scan.py`
 3. Check results in `reports/non_hardlinked_tv_episodes_{timestamp}.txt`
 
-## Configuration
+## 🛠️Configuration
 
 **config/config.json:**
 ```json
@@ -62,7 +62,7 @@ CONFIG_DIR_OVERRIDE = "/custom/path/to/config"
 REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
 ```
 
-## Exclusion List
+## 🚫 Exclusion List
 
 Add files to ignore in `config/exclusion.txt` (one per line, relative to `root_dir`).  
 **Use the same path format as shown in the reports.**
@@ -73,14 +73,14 @@ Example:
 us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mkv
 ```
 
-## Output
+## ✅ Output
 
 - **Report:** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
 - **Logs:** `reports/logs_{timestamp}.txt`
 
 Both files include timestamps and scan statistics.
 
-## Cleanup (Sonarr/Radarr)
+## 🧼 Cleanup (Sonarr/Radarr)
 
 To rebuild hardlinks with Sonarr:
 - Go to: **Wanted** → **Manual Import**
@@ -94,11 +94,7 @@ Sonarr will rebuild the hardlinks for that show. The process is the same with Ra
 
 ---
 
-# Hardlink TV Shows Scanner (Français)
-
-Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
-
-## Pourquoi c'est important
+## 💡 Pourquoi c'est important
 
 **Sonarr** et **Radarr** peuvent créent des hardlinks pour économiser l'espace disque en créant plusieurs entrées de répertoire pointant vers le même fichier physique. Cependant, les hardlinks peuvent se rompre pour diverses raisons:
 - Déplacement de fichiers entre systèmes de fichiers
@@ -111,13 +107,13 @@ Quand un hardlink se rompt, le fichier est dupliqué sur le disque, gaspillant d
 
 Un hardlink est une référence directe aux données d'un fichier sur le disque. Au lieu de copier un fichier (ce qui doublerait le stockage), un hardlink crée un autre nom pointant vers les **mêmes données physiques**. C'est invisible pour l'utilisateur mais économise l'espace disque. Un fichier, plusieurs chemins.
 
-## Démarrage rapide
+## 🚀 Démarrage rapide
 
 1. Modifiez `config/config.json` - définissez le chemin de votre bibliothèque TV dans `root_dir`
 2. Exécutez : `python3 scan.py`
 3. Vérifiez les résultats dans `reports/non_hardlinked_tv_episodes_{timestamp}.txt`
 
-## Configuration
+## 🛠️ Configuration
 
 **config/config.json:**
 ```json
@@ -136,7 +132,7 @@ CONFIG_DIR_OVERRIDE = "/custom/path/to/config"
 REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
 ```
 
-## Liste d'exclusion
+## 🚫 Liste d'exclusion
 
 Ajoutez les fichiers à ignorer dans `config/exclusion.txt` (un par ligne, relatif à `root_dir`).  
 **Utilisez le même format de chemin que celui affiché dans les rapports.**
@@ -147,14 +143,14 @@ Exemple :
 us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mkv
 ```
 
-## Résultats
+## ✅ Résultats
 
 - **Rapport :** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
 - **Journaux :** `reports/logs_{timestamp}.txt`
 
 Les deux fichiers incluent des horodatages et des statistiques de scan.
 
-## Nettoyage (Sonarr/Radarr)
+## 🧼 Nettoyage (Sonarr/Radarr)
 
 Pour reconstruire les hardlinks avec Sonarr :
 - **Recherché** → **Importation manuelle**
@@ -165,4 +161,3 @@ Pour reconstruire les hardlinks avec Sonarr :
 - **Importer**
 
 Sonarr reconstruira les hardlinks pour cette série. Le processus est le même avec Radarr.
-
