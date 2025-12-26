@@ -1,6 +1,6 @@
 # Hardlink TV Shows Scanner
 
-Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers (Sonarr, torrent seeding, etc.).
+Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
 ## Quick Start
 
