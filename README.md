@@ -47,7 +47,6 @@ Both files include timestamps and scan statistics.
 
 ---
 
-# Analyseur de Hardlinks pour Séries TV
 
 Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
 
