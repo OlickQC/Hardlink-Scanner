@@ -53,10 +53,8 @@ EXCLUSION_FILE = os.path.join(
 VIDEO_EXTENSIONS = tuple(
     ext.lower() for ext in CONFIG["video_extensions"]
 )
-reports_dir_setting = REPORTS_DIR_OVERRIDE or CONFIG.get("reports_dir")
-
-if reports_dir_setting:
-    resolved_reports_dir = os.path.expanduser(reports_dir_setting)
+if REPORTS_DIR_OVERRIDE:
+    resolved_reports_dir = os.path.expanduser(REPORTS_DIR_OVERRIDE)
     if not os.path.isabs(resolved_reports_dir):
         resolved_reports_dir = os.path.join(BASE_DIR, resolved_reports_dir)
 else:

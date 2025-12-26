@@ -16,7 +16,6 @@ Scans a TV media library and reports video files that are **not hardlinked**. De
   "root_dir": "/mnt/user/data/media/tv",
   "exclusion_file": "exclusion.txt",
   "video_extensions": [".mkv", ".mp4"],
-  "reports_dir": "reports",
   "verbose": true
 }
 ```
