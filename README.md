@@ -1,4 +1,4 @@
-# Hardlink TV Shows Scanner
+# Hardlink TV Shows Scanner (English)
 
 Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
@@ -47,6 +47,7 @@ Both files include timestamps and scan statistics.
 
 ---
 
+# Hardlink TV Shows Scanner (Français)
 
 Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
 
