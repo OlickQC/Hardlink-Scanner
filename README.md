@@ -2,6 +2,26 @@
 
 Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
+## Table of Contents
+
+- English
+  - [Why This Matters](#why-this-matters)
+  - [What is a Hardlink?](#what-is-a-hardlink)
+  - [Quick Start](#quick-start)
+  - [Configuration](#configuration)
+  - [Exclusion List](#exclusion-list)
+  - [Output](#output)
+  - [Cleanup (Sonarr/Radarr)](#cleanup-sonarrradarr)
+
+- Français
+  - [Pourquoi c'est important](#pourquoi-cest-important)
+  - [Qu'est-ce qu'un Hardlink ?](#quest-ce-quun-hardlink-)
+  - [Démarrage rapide](#démarrage-rapide)
+  - [Configuration](#configuration-1)
+  - [Liste d'exclusion](#liste-dexclusion)
+  - [Résultats](#résultats)
+  - [Nettoyage (Sonarr/Radarr)](#nettoyage-sonarrradarr)
+
 ## Why This Matters
 
 **Sonarr** and **Radarr** can create hardlinks to save disk space by making multiple directory entries pointing to the same physical file. However, hardlinks can break for various reasons:
@@ -76,7 +96,7 @@ Sonarr will rebuild the hardlinks for that show. The process is the same with Ra
 
 Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
 
-## Pourquoi C'est Important
+## Pourquoi c'est important
 
 **Sonarr** et **Radarr** peuvent créent des hardlinks pour économiser l'espace disque en créant plusieurs entrées de répertoire pointant vers le même fichier physique. Cependant, les hardlinks peuvent se rompre pour diverses raisons:
 - Déplacement de fichiers entre systèmes de fichiers
@@ -89,7 +109,7 @@ Quand un hardlink se rompt, le fichier est dupliqué sur le disque, gaspillant d
 
 Un hardlink est une référence directe aux données d'un fichier sur le disque. Au lieu de copier un fichier (ce qui doublerait le stockage), un hardlink crée un autre nom pointant vers les **mêmes données physiques**. C'est invisible pour l'utilisateur mais économise l'espace disque. Un fichier, plusieurs chemins.
 
-## Démarrage Rapide
+## Démarrage rapide
 
 1. Modifiez `config/config.json` - définissez le chemin de votre bibliothèque TV dans `root_dir`
 2. Exécutez : `python3 scan.py`
@@ -114,7 +134,7 @@ CONFIG_DIR_OVERRIDE = "/custom/path/to/config"
 REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
 ```
 
-## Liste d'Exclusion
+## Liste d'exclusion
 
 Ajoutez les fichiers à ignorer dans `config/exclusion.txt` (un par ligne, relatif à `root_dir`).  
 **Utilisez le même format de chemin que celui affiché dans les rapports.**
