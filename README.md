@@ -2,6 +2,19 @@
 
 Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
+## Why This Matters
+
+**Sonarr** and **Radarr** can create hardlinks to save disk space by making multiple directory entries pointing to the same physical file. However, hardlinks can break for various reasons:
+- Moving files between filesystems
+- Manual file operations
+- Filesystem corruption
+
+When a hardlink breaks, the file is duplicated on disk, wasting valuable storage. This script identifies these broken hardlinks so you can clean them up.
+
+### What is a Hardlink?
+
+A hardlink is a direct reference to a file's data on disk. Instead of copying a file (which doubles the storage), a hardlink creates another name pointing to the **same physical data**. It's invisible to users but saves disk space. One file, multiple paths.
+
 ## Quick Start
 
 1. Edit `config/config.json` - set your TV library path in `root_dir`
@@ -45,13 +58,36 @@ us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better 
 
 Both files include timestamps and scan statistics.
 
+## Cleanup (Sonarr/Radarr)
+
+To rebuild hardlinks with Sonarr:
+- Go to: **Wanted** → **Manual Import**
+- Pick the folder where the files were downloaded
+- **Interactive Import**
+- Match each Relative Path to the correct Series and Episodes
+- At the bottom-left dropdown, pick: **Hardlink/Copy files**
+- Click **Import**
+
+Sonarr will rebuild the hardlinks for that show. The process is the same with Radarr.
+
 ---
 
 # Hardlink TV Shows Scanner (Français)
 
 Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
 
----
+## Pourquoi C'est Important
+
+**Sonarr** et **Radarr** peuvent créent des hardlinks pour économiser l'espace disque en créant plusieurs entrées de répertoire pointant vers le même fichier physique. Cependant, les hardlinks peuvent se rompre pour diverses raisons:
+- Déplacement de fichiers entre systèmes de fichiers
+- Opérations manuelles sur les fichiers
+- Corruption du système de fichiers
+
+Quand un hardlink se rompt, le fichier est dupliqué sur le disque, gaspillant de l'espace de stockage précieux. Ce script identifie ces hardlinks rompus pour que vous puissiez les nettoyer.
+
+### Qu'est-ce qu'un Hardlink ?
+
+Un hardlink est une référence directe aux données d'un fichier sur le disque. Au lieu de copier un fichier (ce qui doublerait le stockage), un hardlink crée un autre nom pointant vers les **mêmes données physiques**. C'est invisible pour l'utilisateur mais économise l'espace disque. Un fichier, plusieurs chemins.
 
 ## Démarrage Rapide
 
@@ -95,4 +131,16 @@ us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better 
 - **Journaux :** `reports/logs_{timestamp}.txt`
 
 Les deux fichiers incluent des horodatages et des statistiques de scan.
+
+## Nettoyage (Sonarr/Radarr)
+
+Pour reconstruire les hardlinks avec Sonarr :
+- **Recherché** → **Importation manuelle**
+- Choisir le dossier où les fichiers ont été téléchargés
+- **Importation interactive**
+- Faire concorder le Chemin Relatif à la Série, Saison et Épisodes
+- En bas à gauche (menu déroulant), choisir : **Lien physique/Copie de fichiers**
+- **Importer**
+
+Sonarr reconstruira les hardlinks pour cette série. Le processus est le même avec Radarr.
 
