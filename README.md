@@ -1,4 +1,4 @@
-## Hardlink TV Shows Scanner
+## Hardlink TV Shows & Movies Scanner
 [EN] Scans a TV media library and reports video files that are **not hardlinked**. Designed for Linux/Unraid media servers.
 
 [FR] Analyse une bibliothèque de médias TV et génère un rapport des fichiers vidéo qui ne sont **pas en hardlink**. Conçu pour les serveurs Linux/Unraid.
@@ -50,11 +50,26 @@ A hardlink is a direct reference to a file's data on disk. Instead of copying a 
 ```json
 {
   "root_dir": "/mnt/user/data/media/tv",
-  "exclusion_file": "exclusion.txt",
+  "root_dir_movies": "/mnt/user/data/media/movies",
+  "enabled_tv": true,
+  "enabled_movies": true,
+  "exclusion_tv_file": "exclusion_tv.txt",
+  "exclusion_movies_file": "exclusion_movies.txt",
   "video_extensions": [".mkv", ".mp4"],
   "verbose": true
 }
 ```
+
+**Config options:**
+| Key | Description |
+|---|---|
+| `root_dir` | Root directory of your TV library |
+| `root_dir_movies` | Root directory of your Movies library |
+| `enabled_tv` | Enable/disable TV shows scan (default: `true`) |
+| `enabled_movies` | Enable/disable movies scan (default: `true`) |
+| `exclusion_tv_file` | Exclusion file for TV shows (default: `exclusion_tv.txt`) |
+| `exclusion_movies_file` | Exclusion file for movies (default: `exclusion_movies.txt`) |
+| `video_extensions` | File extensions to scan |
 
 **Relocate config/reports folders** (optional):  
 Edit these variables at the top of `scan.py`:
@@ -65,21 +80,28 @@ REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
 
 ## 🚫 Exclusion List
 
-Add files to ignore in `config/exclusion.txt` (one per line, relative to `root_dir`).  
+Add files to ignore in `config/exclusion_tv.txt` for TV shows and `config/exclusion_movies.txt` for movies (one per line, relative to respective root directories).  
 **Use the same path format as shown in the reports.**
 
-Example:
+Example for TV (`exclusion_tv.txt`):
 ```
 # Ignore these specific episodes
 us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mkv
 ```
 
+Example for Movies (`exclusion_movies.txt`):
+```
+# Ignore these specific movies
+us/Movie Title (2020)/Movie Title (2020).mkv
+```
+
 ## ✅ Output
 
-- **Report:** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
+- **TV Report:** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
+- **Movies Report:** `reports/non_hardlinked_movies_{timestamp}.txt`  
 - **Logs:** `reports/logs_{timestamp}.txt`
 
-Both files include timestamps and scan statistics.
+Both reports include timestamps and scan statistics.
 
 ## 🧼 Cleanup (Sonarr/Radarr)
 
@@ -120,11 +142,26 @@ Un hardlink est une référence directe aux données d'un fichier sur le disque.
 ```json
 {
   "root_dir": "/mnt/user/data/media/tv",
-  "exclusion_file": "exclusion.txt",
+  "root_dir_movies": "/mnt/user/data/media/movies",
+  "enabled_tv": true,
+  "enabled_movies": true,
+  "exclusion_tv_file": "exclusion_tv.txt",
+  "exclusion_movies_file": "exclusion_movies.txt",
   "video_extensions": [".mkv", ".mp4"],
   "verbose": true
 }
 ```
+
+**Options de configuration :**
+| Clé | Description |
+|---|---|
+| `root_dir` | Répertoire racine de votre bibliothèque TV |
+| `root_dir_movies` | Répertoire racine de votre bibliothèque de films |
+| `enabled_tv` | Activer/désactiver l'analyse TV (défaut: `true`) |
+| `enabled_movies` | Activer/désactiver l'analyse des films (défaut: `true`) |
+| `exclusion_tv_file` | Fichier d'exclusion pour les séries TV (défaut: `exclusion_tv.txt`) |
+| `exclusion_movies_file` | Fichier d'exclusion pour les films (défaut: `exclusion_movies.txt`) |
+| `video_extensions` | Extensions de fichiers à analyser |
 
 **Relocalisez les dossiers config/reports** (optionnel) :  
 Modifiez ces variables en haut de `scan.py`:
@@ -135,18 +172,25 @@ REPORTS_DIR_OVERRIDE = "/custom/path/to/reports"
 
 ## 🚫 Liste d'exclusion
 
-Ajoutez les fichiers à ignorer dans `config/exclusion.txt` (un par ligne, relatif à `root_dir`).  
+Ajoutez les fichiers à ignorer dans `config/exclusion_tv.txt` pour les séries TV et `config/exclusion_movies.txt` pour les films (un par ligne, relatif aux répertoires respectifs).  
 **Utilisez le même format de chemin que celui affiché dans les rapports.**
 
-Exemple :
+Exemple pour les séries TV (`exclusion_tv.txt`):
 ```
 # Ignorer ces épisodes spécifiques
 us/Better Call Saul - Employee Training (2017) [tvdbid-365403]/Season 01/Better Call Saul - Employee Training (2017) - S01E01.mkv
 ```
 
+Exemple pour les films (`exclusion_movies.txt`):
+```
+# Ignorer ces films spécifiques
+us/Movie Title (2020)/Movie Title (2020).mkv
+```
+
 ## ✅ Résultats
 
-- **Rapport :** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
+- **Rapport TV :** `reports/non_hardlinked_tv_episodes_{timestamp}.txt`  
+- **Rapport Films :** `reports/non_hardlinked_movies_{timestamp}.txt`  
 - **Journaux :** `reports/logs_{timestamp}.txt`
 
 Les deux fichiers incluent des horodatages et des statistiques de scan.
