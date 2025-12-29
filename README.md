@@ -55,6 +55,8 @@ A hardlink is a direct reference to a file's data on disk. Instead of copying a 
   "enabled_movies": true,
   "exclusion_tv_file": "exclusion_tv.txt",
   "exclusion_movies_file": "exclusion_movies.txt",
+  "excluded_dirs_tv": [],
+  "excluded_dirs_movies": [],
   "video_extensions": [".mkv", ".mp4"],
   "verbose": true
 }
@@ -69,6 +71,8 @@ A hardlink is a direct reference to a file's data on disk. Instead of copying a 
 | `enabled_movies` | Enable/disable movies scan (default: `true`) |
 | `exclusion_tv_file` | Exclusion file for TV shows (default: `exclusion_tv.txt`) |
 | `exclusion_movies_file` | Exclusion file for movies (default: `exclusion_movies.txt`) |
+| `excluded_dirs_tv` | List of TV directories to exclude from scan (default: `[]`) |
+| `excluded_dirs_movies` | List of movie directories to exclude from scan (default: `[]`) |
 | `video_extensions` | File extensions to scan |
 
 **Relocate config/reports folders** (optional):  
@@ -94,6 +98,25 @@ Example for Movies (`exclusion_movies.txt`):
 # Ignore these specific movies
 us/Movie Title (2020)/Movie Title (2020).mkv
 ```
+
+### Exclude Folders
+
+To exclude entire directories from the scan, use the `excluded_dirs_tv` and `excluded_dirs_movies` options in the config:
+
+```json
+{
+  "root_dir": "/mnt/user/data/media/tv",
+  "excluded_dirs_tv": [
+    "/mnt/user/data/media/tv/anime",
+    "/mnt/user/data/media/tv/archive"
+  ],
+  "excluded_dirs_movies": [
+    "/mnt/user/data/media/movies/temp"
+  ]
+}
+```
+
+You can specify either absolute paths or relative paths (relative to the root directory). The script will skip scanning these folders entirely.
 
 ## ✅ Output
 
@@ -147,6 +170,8 @@ Un hardlink est une référence directe aux données d'un fichier sur le disque.
   "enabled_movies": true,
   "exclusion_tv_file": "exclusion_tv.txt",
   "exclusion_movies_file": "exclusion_movies.txt",
+  "excluded_dirs_tv": [],
+  "excluded_dirs_movies": [],
   "video_extensions": [".mkv", ".mp4"],
   "verbose": true
 }
@@ -161,6 +186,8 @@ Un hardlink est une référence directe aux données d'un fichier sur le disque.
 | `enabled_movies` | Activer/désactiver l'analyse des films (défaut: `true`) |
 | `exclusion_tv_file` | Fichier d'exclusion pour les séries TV (défaut: `exclusion_tv.txt`) |
 | `exclusion_movies_file` | Fichier d'exclusion pour les films (défaut: `exclusion_movies.txt`) |
+| `excluded_dirs_tv` | Liste des répertoires TV à exclure de l'analyse (défaut: `[]`) |
+| `excluded_dirs_movies` | Liste des répertoires de films à exclure de l'analyse (défaut: `[]`) |
 | `video_extensions` | Extensions de fichiers à analyser |
 
 **Relocalisez les dossiers config/reports** (optionnel) :  
@@ -186,6 +213,25 @@ Exemple pour les films (`exclusion_movies.txt`):
 # Ignorer ces films spécifiques
 us/Movie Title (2020)/Movie Title (2020).mkv
 ```
+
+### Exclure des Dossiers
+
+Pour exclure des répertoires entiers de l'analyse, utilisez les options `excluded_dirs_tv` et `excluded_dirs_movies` dans la configuration :
+
+```json
+{
+  "root_dir": "/mnt/user/data/media/tv",
+  "excluded_dirs_tv": [
+    "/mnt/user/data/media/tv/anime",
+    "/mnt/user/data/media/tv/archive"
+  ],
+  "excluded_dirs_movies": [
+    "/mnt/user/data/media/movies/temp"
+  ]
+}
+```
+
+Vous pouvez spécifier soit des chemins absolus, soit des chemins relatifs (relatifs au répertoire racine). Le script ignorera complètement ces dossiers.
 
 ## ✅ Résultats
 

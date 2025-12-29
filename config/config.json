@@ -6,6 +6,8 @@
   "exclusion_tv_file": "exclusion_tv.txt",
   "exclusion_movies_file": "exclusion_movies.txt",
   "exclusion_file": "exclusion.txt",
+  "excluded_dirs_tv": [],
+  "excluded_dirs_movies": [],
   "video_extensions": [".mkv",".mp4"],
   "verbose": true
 }

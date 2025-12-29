@@ -52,6 +52,10 @@ ROOT_DIR_MOVIES = CONFIG.get("root_dir_movies")
 ENABLED_TV = CONFIG.get("enabled_tv", True)
 ENABLED_MOVIES = CONFIG.get("enabled_movies", False)
 
+# Excluded directories (folders to skip during scan)
+EXCLUDED_DIRS_TV = CONFIG.get("excluded_dirs_tv", [])
+EXCLUDED_DIRS_MOVIES = CONFIG.get("excluded_dirs_movies", [])
+
 # Exclusions (separate files, with sensible defaults)
 EXCLUSION_TV_FILE = os.path.join(
     CONFIG_DIR,
@@ -128,7 +132,7 @@ def load_exclusions(exclusion_file_path):
     return exclusions
 
 
-def scan_for_non_hardlinked_files(root_dir, video_exts, exclusions, group_index, unknown_label):
+def scan_for_non_hardlinked_files(root_dir, video_exts, exclusions, excluded_dirs, group_index, unknown_label):
     """
     Scan directory for non-hardlinked video files.
 
@@ -136,6 +140,9 @@ def scan_for_non_hardlinked_files(root_dir, video_exts, exclusions, group_index,
         root_dir (str): Root directory to scan.
         video_exts (tuple): Tuple of video file extensions to look for.
         exclusions (set): Set of excluded paths.
+        excluded_dirs (list): List of directory paths to exclude from scan.
+        group_index (int): Index for grouping files.
+        unknown_label (str): Label for unknown groups.
 
     Returns:
         tuple: (non_hardlinked_dict, total_files, excluded_files,
@@ -149,6 +156,8 @@ def scan_for_non_hardlinked_files(root_dir, video_exts, exclusions, group_index,
     logging.info("Starting filesystem scan...")
 
     for root, dirs, files in os.walk(root_dir):
+        # Remove excluded directories from dirs to prevent os.walk from descending into them
+        dirs[:] = [d for d in dirs if os.path.join(root, d) not in excluded_dirs and os.path.relpath(os.path.join(root, d), root_dir) not in excluded_dirs]
         for file in files:
             if file.lower().endswith(video_exts):
                 total_files += 1
@@ -231,6 +240,14 @@ def main():
     logging.info("TV report file: %s", REPORT_FILE_TV)
     logging.info("Movies report file: %s", REPORT_FILE_MOVIES)
     logging.info("Logs file: %s", LOG_FILE)
+    if ENABLED_TV and EXCLUDED_DIRS_TV:
+        logging.info("Excluded TV directories: %d", len(EXCLUDED_DIRS_TV))
+        for excluded_dir in EXCLUDED_DIRS_TV:
+            logging.info("  - %s", excluded_dir)
+    if ENABLED_MOVIES and EXCLUDED_DIRS_MOVIES:
+        logging.info("Excluded Movies directories: %d", len(EXCLUDED_DIRS_MOVIES))
+        for excluded_dir in EXCLUDED_DIRS_MOVIES:
+            logging.info("  - %s", excluded_dir)
     logging.info("") # Spacer before switching to TV
     
     # TV scan
@@ -242,6 +259,10 @@ def main():
         logging.info("Exclusion file (TV): %s", EXCLUSION_TV_FILE)
         tv_exclusions = load_exclusions(EXCLUSION_TV_FILE)
         logging.info("Loaded %d TV exclusions", len(tv_exclusions))
+        if EXCLUDED_DIRS_TV:
+            logging.info("Excluded TV directories: %d", len(EXCLUDED_DIRS_TV))
+            for excluded_dir in EXCLUDED_DIRS_TV:
+                logging.info("  - %s", excluded_dir)
 
         (
             tv_non_hardlinked,
@@ -249,7 +270,7 @@ def main():
             tv_excluded_files,
             tv_non_hardlinked_files,
         ) = scan_for_non_hardlinked_files(
-            ROOT_DIR_TV, VIDEO_EXTENSIONS, tv_exclusions, group_index=-3, unknown_label="UNKNOWN_SHOW"
+            ROOT_DIR_TV, VIDEO_EXTENSIONS, tv_exclusions, EXCLUDED_DIRS_TV, group_index=-3, unknown_label="UNKNOWN_SHOW"
         )
 
         write_report(REPORT_FILE_TV, tv_non_hardlinked)
@@ -276,6 +297,10 @@ def main():
             logging.info("Exclusion file (Movies): %s", EXCLUSION_MOVIES_FILE)
             movies_exclusions = load_exclusions(EXCLUSION_MOVIES_FILE)
             logging.info("Loaded %d Movies exclusions", len(movies_exclusions))
+            if EXCLUDED_DIRS_MOVIES:
+                logging.info("Excluded Movies directories: %d", len(EXCLUDED_DIRS_MOVIES))
+                for excluded_dir in EXCLUDED_DIRS_MOVIES:
+                    logging.info("  - %s", excluded_dir)
 
             (
                 movies_non_hardlinked,
@@ -283,7 +308,7 @@ def main():
                 movies_excluded_files,
                 movies_non_hardlinked_files,
             ) = scan_for_non_hardlinked_files(
-                ROOT_DIR_MOVIES, VIDEO_EXTENSIONS, movies_exclusions, group_index=-2, unknown_label="UNKNOWN_MOVIE"
+                ROOT_DIR_MOVIES, VIDEO_EXTENSIONS, movies_exclusions, EXCLUDED_DIRS_MOVIES, group_index=-2, unknown_label="UNKNOWN_MOVIE"
             )
 
             write_report(REPORT_FILE_MOVIES, movies_non_hardlinked)
